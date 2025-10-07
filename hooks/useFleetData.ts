@@ -88,12 +88,11 @@ export const useFleetData = () => {
 
       ws.onopen = () => {
           console.log('Connected to AISstream for real-time ship tracking.');
-          const initialShips = getFromStorage('fleet_ships', shipsData);
-          const mmsis = initialShips.map(ship => ship.imo);
-
+          
+          // Use a global bounding box subscription, which is more likely to be supported by a free API key.
           const subscriptionMessage = {
               APIkey: AISSTREAM_API_KEY,
-              FiltersShipMMSI: mmsis,
+              BoundingBoxes: [[[-90, -180], [90, 180]]],
           };
           
           try {
@@ -187,19 +186,8 @@ export const useFleetData = () => {
       return [...prevShips, newShip];
     });
 
-    // Subscribe to the new ship's real-time updates
-    if (newShip && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      const subscriptionMessage = {
-          APIkey: AISSTREAM_API_KEY,
-          FiltersShipMMSI: [newShip.imo], // 'imo' holds the MMSI
-      };
-      try {
-          wsRef.current.send(JSON.stringify(subscriptionMessage));
-          console.log(`Subscribed to real-time updates for new ship: ${newShip.name}`);
-      } catch (error) {
-          console.error("Failed to send subscription for new ship:", error);
-      }
-    }
+    // No longer need to send a new subscription message, 
+    // as the global subscription will cover the new ship.
   };
 
   const updateShip = (shipId: number, updatedData: Partial<Omit<Ship, 'id'>>) => {
