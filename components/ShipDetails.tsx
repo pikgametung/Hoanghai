@@ -112,32 +112,33 @@ const ShipDetails: React.FC<ShipDetailsProps> = (props) => {
 
   return (
     <div className="bg-gray-800/50 rounded-lg shadow-xl h-full flex flex-col">
-      <div className="p-6 border-b border-gray-700">
-        <h2 className="text-3xl font-bold text-white">{ship.name}</h2>
+      <div className="p-4 sm:p-6 border-b border-gray-700">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white">{ship.name}</h2>
         <p className="text-md text-gray-400">MMSI: {ship.imo} / IMO: {ship.trueImo}</p>
       </div>
       <div className="border-b border-gray-700">
-        <nav className="flex space-x-2 px-6" aria-label="Tabs">
+        <nav className="flex space-x-2 overflow-x-auto p-2 scrollbar-hide" aria-label="Tabs">
           {tabs.map((tab) => {
              const Icon = tab.icon;
              return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`flex items-center space-x-2 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 focus:outline-none ${
+                className={`flex-shrink-0 flex items-center space-x-2 whitespace-nowrap py-2 px-4 rounded-full font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-500'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-gray-100'
                 }`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-5 h-5 hidden sm:inline-block" />
                 <span>{tab.label}</span>
               </button>
             )
           })}
         </nav>
+        <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; } .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
       </div>
-      <div className="p-6 flex-1 overflow-y-auto">
+      <div className="p-4 sm:p-6 flex-1 overflow-y-auto">
         {renderContent()}
       </div>
     </div>

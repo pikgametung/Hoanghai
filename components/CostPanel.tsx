@@ -42,20 +42,20 @@ const CostTable: React.FC<{
         <table className="min-w-full text-sm text-left">
           <thead className="border-b border-gray-600 text-xs text-gray-400 uppercase tracking-wider sticky top-0 bg-gray-700/50 backdrop-blur-sm">
             <tr>
-              <th scope="col" className="px-6 py-3">Ngày</th>
-              <th scope="col" className="px-6 py-3">Mô tả</th>
-              <th scope="col" className="px-6 py-3">Hạng mục</th>
-              <th scope="col" className="px-6 py-3 text-right">Số tiền</th>
+              <th scope="col" className="px-3 py-3 sm:px-6">Ngày</th>
+              <th scope="col" className="px-3 py-3 sm:px-6">Mô tả</th>
+              <th scope="col" className="px-3 py-3 sm:px-6">Hạng mục</th>
+              <th scope="col" className="px-3 py-3 sm:px-6 text-right">Số tiền</th>
               <th scope="col" className="px-2 py-3"><span className="sr-only">Hành động</span></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-700">
             {costs.map((cost) => (
               <tr key={cost.id} className="hover:bg-gray-700/70 group">
-                <td className="px-6 py-4 text-gray-300 whitespace-nowrap">{new Date(cost.date).toLocaleDateString('vi-VN')}</td>
-                <td className="px-6 py-4 text-gray-200">{cost.description}</td>
-                <td className="px-6 py-4 font-medium text-gray-300">{cost.category}</td>
-                <td className="px-6 py-4 font-medium text-gray-100 text-right">{cost.amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300 whitespace-nowrap">{new Date(cost.date).toLocaleDateString('vi-VN')}</td>
+                <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-200">{cost.description}</td>
+                <td className="px-3 py-3 sm:px-6 sm:py-4 font-medium text-gray-300">{cost.category}</td>
+                <td className="px-3 py-3 sm:px-6 sm:py-4 font-medium text-gray-100 text-right">{cost.amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
                 <td className="px-2 py-4 text-right">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end items-center space-x-1">
                     <button onClick={() => onEdit(cost)} className="p-1 rounded hover:bg-gray-600" title="Sửa"><PencilIcon className="w-4 h-4" /></button>
@@ -67,8 +67,8 @@ const CostTable: React.FC<{
           </tbody>
           <tfoot>
             <tr className="bg-gray-800/70 font-bold">
-              <td colSpan={3} className="px-6 py-3 text-right text-gray-300 uppercase">Tổng cộng</td>
-              <td className="px-6 py-3 text-right text-white">{totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+              <td colSpan={3} className="px-3 sm:px-6 py-3 text-right text-gray-300 uppercase">Tổng cộng</td>
+              <td className="px-3 sm:px-6 py-3 text-right text-white">{totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
               <td></td>
             </tr>
           </tfoot>

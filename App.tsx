@@ -20,6 +20,7 @@ const App: React.FC = () => {
   } = useFleetData();
   const [selectedShipId, setSelectedShipId] = useState<number | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     // If there's no selection but there are ships, select the first one.
@@ -44,6 +45,12 @@ const App: React.FC = () => {
     addShip(newShipData);
     setIsAddModalOpen(false);
   };
+  
+  const handleSelectShip = (id: number) => {
+    setSelectedShipId(id);
+    setIsSidebarOpen(false); // Close sidebar on selection
+  };
+
 
   if (loading) {
     return (
@@ -60,13 +67,20 @@ const App: React.FC = () => {
   return (
     <>
       <div className="min-h-screen flex flex-col bg-gray-900 text-gray-200 font-sans">
-        <Header />
+        <Header onMenuClick={() => setIsSidebarOpen(true)} />
         <div className="flex flex-1 overflow-hidden">
-          <aside className="w-1/4 xl:w-1/5 bg-gray-800/50 p-4 overflow-y-auto border-r border-gray-700">
+          {isSidebarOpen && (
+            <div 
+              className="fixed inset-0 bg-black/60 z-30 md:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+              aria-hidden="true"
+            ></div>
+          )}
+          <aside className={`fixed inset-y-0 left-0 z-40 w-80 transform transition-transform duration-300 ease-in-out md:relative md:w-1/4 md:translate-x-0 xl:w-1/5 bg-gray-800 p-4 overflow-y-auto border-r border-gray-700 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
             <FleetList 
               ships={ships}
               selectedShipId={selectedShipId}
-              onSelectShip={setSelectedShipId}
+              onSelectShip={handleSelectShip}
               onUpdateShip={updateShip}
               onDeleteShip={deleteShip}
               onAddShipClick={() => setIsAddModalOpen(true)}

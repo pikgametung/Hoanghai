@@ -27,7 +27,7 @@ const StatCard: React.FC<{ label: string; value: React.ReactNode }> = ({ label, 
     </div>
 );
 
-const EditableStatCard: React.FC<{
+const EditableField: React.FC<{
   label: string;
   name: keyof Ship;
   value: string | number;
@@ -36,7 +36,7 @@ const EditableStatCard: React.FC<{
   options?: { value: string; label: string }[];
   step?: string;
 }> = ({ label, name, value, onChange, type = 'text', options, step }) => (
-  <div className="bg-gray-700/50 p-4 rounded-lg">
+  <div>
     <label htmlFor={name} className="text-sm text-gray-400">{label}</label>
     {type === 'select' && options ? (
       <select
@@ -44,7 +44,7 @@ const EditableStatCard: React.FC<{
         name={name}
         value={value}
         onChange={onChange}
-        className="mt-1 w-full bg-gray-900/80 text-white border-blue-500 border rounded-md px-2 py-1.5 text-lg font-semibold focus:outline-none focus:ring-1 focus:ring-blue-400"
+        className="mt-1 w-full bg-gray-900/80 text-white border-gray-600 border rounded-md px-2 py-1.5 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         {options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
       </select>
@@ -56,7 +56,7 @@ const EditableStatCard: React.FC<{
         value={value}
         onChange={onChange}
         step={step}
-        className="mt-1 w-full bg-gray-900/80 text-white border-blue-500 border rounded-md px-2 py-1.5 text-lg font-semibold focus:outline-none focus:ring-1 focus:ring-blue-400"
+        className="mt-1 w-full bg-gray-900/80 text-white border-gray-600 border rounded-md px-2 py-1.5 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     )}
   </div>
@@ -149,38 +149,45 @@ const OverviewPanel: React.FC<OverviewPanelProps> = ({ ship, onUpdateShip }) => 
         </div>
 
         {isEditing ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <EditableStatCard label="Tình trạng hiện tại" name="status" value={editableShip.status} onChange={handleInputChange} type="select" options={statusOptions} />
-                <EditableStatCard label="Vĩ độ" name="latitude" value={editableShip.latitude} onChange={handleInputChange} type="number" step="0.0001" />
-                <EditableStatCard label="Kinh độ" name="longitude" value={editableShip.longitude} onChange={handleInputChange} type="number" step="0.0001" />
-                <EditableStatCard label="Loại tàu" name="type" value={editableShip.type} onChange={handleInputChange} />
-                <EditableStatCard label="Thuyền trưởng" name="captain" value={editableShip.captain} onChange={handleInputChange} />
-                <EditableStatCard label="Số MMSI" name="imo" value={editableShip.imo} onChange={handleInputChange} />
-                <EditableStatCard label="Số IMO" name="trueImo" value={editableShip.trueImo} onChange={handleInputChange} />
-                <EditableStatCard label="Cờ" name="flag" value={editableShip.flag} onChange={handleInputChange} />
-                <EditableStatCard label="Năm đóng" name="builtYear" value={editableShip.builtYear} onChange={handleInputChange} type="number"/>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <EditableField label="Tình trạng hiện tại" name="status" value={editableShip.status} onChange={handleInputChange} type="select" options={statusOptions} />
+                <EditableField label="Vĩ độ" name="latitude" value={editableShip.latitude} onChange={handleInputChange} type="number" step="0.0001" />
+                <EditableField label="Kinh độ" name="longitude" value={editableShip.longitude} onChange={handleInputChange} type="number" step="0.0001" />
+                <EditableField label="Loại tàu" name="type" value={editableShip.type} onChange={handleInputChange} />
+                <EditableField label="Thuyền trưởng" name="captain" value={editableShip.captain} onChange={handleInputChange} />
+                <EditableField label="Số MMSI" name="imo" value={editableShip.imo} onChange={handleInputChange} />
+                <EditableField label="Số IMO" name="trueImo" value={editableShip.trueImo} onChange={handleInputChange} />
+                <EditableField label="Cờ" name="flag" value={editableShip.flag} onChange={handleInputChange} />
+                <EditableField label="Năm đóng" name="builtYear" value={editableShip.builtYear} onChange={handleInputChange} type="number"/>
             </div>
         ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-2">
-                <p className="text-sm text-gray-400 mb-2">Vị trí hiện tại</p>
-                <div ref={mapContainerRef} className="h-[300px] w-full bg-gray-700 rounded-lg z-0"></div>
-              </div>
-              <div className="space-y-4 md:col-span-1">
-                 <StatCard label="Tình trạng" value={
-                    <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${bg} ${text}`}>
-                        <span className={`w-2 h-2 mr-2 rounded-full ${dot}`}></span>
-                        {ship.status}
+             <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2">
+                        <p className="text-sm text-gray-400 mb-2">Vị trí hiện tại</p>
+                        <div ref={mapContainerRef} className="h-[250px] md:h-[300px] w-full bg-gray-700 rounded-lg z-0"></div>
                     </div>
-                } />
-                <StatCard label="Tốc độ hiện tại" value={`${ship.speed.toFixed(1)} hải lý/giờ`} />
-                <StatCard label="Thuyền trưởng" value={ship.captain} />
-              </div>
-              <StatCard label="Loại tàu" value={ship.type} />
-              <StatCard label="Số MMSI" value={ship.imo} />
-              <StatCard label="Số IMO" value={ship.trueImo} />
-              <StatCard label="Cờ" value={ship.flag} />
-              <StatCard label="Năm đóng" value={ship.builtYear} />
+                    <div className="space-y-4 md:col-span-1">
+                        <StatCard label="Tình trạng" value={
+                            <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${bg} ${text}`}>
+                                <span className={`w-2 h-2 mr-2 rounded-full ${dot}`}></span>
+                                {ship.status}
+                            </div>
+                        } />
+                        <StatCard label="Tốc độ hiện tại" value={`${ship.speed.toFixed(1)} hải lý/giờ`} />
+                        <StatCard label="Thuyền trưởng" value={ship.captain} />
+                    </div>
+                </div>
+                <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Thông tin chi tiết</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <StatCard label="Loại tàu" value={ship.type} />
+                        <StatCard label="Số MMSI" value={ship.imo} />
+                        <StatCard label="Số IMO" value={ship.trueImo} />
+                        <StatCard label="Cờ" value={ship.flag} />
+                        <StatCard label="Năm đóng" value={ship.builtYear} />
+                    </div>
+                </div>
             </div>
         )}
     </div>
