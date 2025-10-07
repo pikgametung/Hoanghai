@@ -1,0 +1,5 @@
+{
+  "name": "Bảng Điều Khiển Quản Lý Đội Tàu",
+  "description": "Bảng điều khiển toàn diện để quản lý tập trung một đội tàu. Nó cho phép theo dõi các chuyến đi, mức tiêu thụ nhiên liệu, chi phí và lịch trình bảo trì để tối ưu hóa hoạt động của đội tàu.",
+  "requestFramePermissions": []
+}
